@@ -7,7 +7,7 @@
 DOMAIN-SUFFIX,h-adashx.ut.taobao.com,REJECT // 淘宝后台广告
 DOMAIN,heic.alicdn.com,REJECT // 淘宝后台广告
 # 12306
-DOMAIN,ad.12306.cn,DIRECT,extended-matching
+host,ad.12306.cn,DIRECT
 # 美柚广告/推广域名
 DOMAIN-SUFFIX,ad.meiyou.com,REJECT
 DOMAIN-SUFFIX,promote.meiyou.com,REJECT
@@ -39,7 +39,6 @@ coolapk = type=http-response,pattern=^https?:\/\/api\.coolapk\.com\/v6\/(feed\/(
 
 [Script]
 # 12306
-移除12306开屏广告 = type=http-request, pattern=^https:\/\/ad\.12306\.cn\/ad\/ser\/getAdList$, script-path=https://kelee.one/Resource/JavaScript/12306/12306_remove_splashscreen_ads.js, requires-body=true
-移除12306应用内广告 = type=http-request, pattern=^https:\/\/mobile\.12306\.cn\/otsmobile\/app\/mgs\/mgw\.htm$, script-path=https://kelee.one/Resource/JavaScript/12306/12306_remove_ads.js
+^https?:\/\/ad\.12306\.cn\/ad\/ser\/getAdList url script-analyze-echo-response https://github.com/ddgksf2013/Scripts/raw/master/12306.js
 [MITM]
 hostname= %APPEND% acs.m.taobao.com, heic.alicdn.com, guide-acs.m.taobao.com, poplayer.template.alibaba.com,app.10099.com.cn,x.seeyouyima.com, axxd.xmseeyouyima.com,ad.12306.cn, mobile.12306.cn,api.coolapk.com
