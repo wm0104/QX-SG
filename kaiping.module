@@ -1,0 +1,15 @@
+#!name=去广告
+#!desc=开屏广告
+#!category=去广告
+[URL Rewrite]
+# 中国广电
+^https?:\/\/app\.10099\.com\.cn\/contact-web\/api\/version\/getFlashScreenPage reject header
+# 美柚
+^http:\/\/x\.seeyouyima\.com\/adx\/staticstics\? reject header
+^https:\/\/axxd\.xmseeyouyima\.com\/ad\/ reject header
+^https:\/\/axxd\.xmseeyouyima\.com\/ad_statistics\? reject header
+^https:\/\/axxd\.xmseeyouyima\.com\/v1\/getad\? reject header
+^https:\/\/axxd\.xmseeyouyima\.com\/pregetad\? reject header
+
+[MITM]
+hostname= %APPEND% app.10099.com.cn,x.seeyouyima.com, axxd.xmseeyouyima.com
