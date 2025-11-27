@@ -1,6 +1,14 @@
 #!name=去广告
 #!desc=开屏广告
 #!category=去广告
+
+[Rule]
+# 美柚广告/推广域名
+DOMAIN-SUFFIX,ad.meiyou.com,REJECT
+DOMAIN-SUFFIX,promote.meiyou.com,REJECT
+DOMAIN-SUFFIX,ad.e.meiyou.com,REJECT
+DOMAIN-SUFFIX,track.meiyou.com,REJECT
+
 [URL Rewrite]
 # 中国广电
 ^https?:\/\/app\.10099\.com\.cn\/contact-web\/api\/version\/getFlashScreenPage reject header
