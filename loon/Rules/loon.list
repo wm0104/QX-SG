@@ -1,6 +1,42 @@
 #!name=去广告
 #!desc=轻量去广告
 
+# 淘宝
+DOMAIN-SUFFIX,h-adashx.ut.taobao.com # 淘宝后台广告
+DOMAIN,heic.alicdn.com # 淘宝后台广告
+DOMAIN-SUFFIX,apoll.m.taobao.com
+DOMAIN-SUFFIX,h-adashx.ut.taobao.com
+DOMAIN-SUFFIX,w.m.taobao.com
+DOMAIN, tunion-api.m.taobao.com
+DOMAIN-SUFFIX,re.m.taobao.com
+DOMAIN-SUFFIX,agoodm.m.taobao.com
+DOMAIN-SUFFIX,ai.taobao.com
+DOMAIN-SUFFIX,api.waptest.taobao.com
+DOMAIN-SUFFIX,dsp.simba.taobao.com
+DOMAIN-SUFFIX,fav.simba.taobao.com
+DOMAIN-SUFFIX,m.simba.taobao.com
+DOMAIN-SUFFIX,mclick.simba.taobao.com
+DOMAIN-SUFFIX,re.taobao.com
+DOMAIN-SUFFIX,redirect.simba.taobao.com
+DOMAIN-SUFFIX,simba.m.taobao.com
+DOMAIN-SUFFIX,srd.simba.taobao.com
+DOMAIN-SUFFIX,temai.taobao.com
+DOMAIN-SUFFIX,textlink.simba.taobao.com
+DOMAIN-SUFFIX,unitacs.m.taobao.com
+DOMAIN-SUFFIX,acs4baichuan.m.taobao.com
+DOMAIN-SUFFIX,adashbc.ut.taobao.com
+DOMAIN-SUFFIX,adash-c.ut.taobao.com
+DOMAIN-SUFFIX,adashxgc.ut.taobao.com
+DOMAIN-SUFFIX,adashx4yt.m.taobao.com
+DOMAIN-SUFFIX,tunion-api.m.taobao.com
+DOMAIN-SUFFIX,tns.simba.taobao.com
+DOMAIN-SUFFIX,click.mz.simba.taobao.com
+DOMAIN-SUFFIX,click.simba.taobao.com
+DOMAIN-SUFFIX,click.tz.simba.taobao.com
+DOMAIN-SUFFIX,stat.simba.taobao.com
+DOMAIN-SUFFIX,m-adash.m.taobao.com
+DOMAIN-SUFFIX,adashbc.m.taobao.com
+
 # > 58同城
 DOMAIN, track.58.com
 DOMAIN, tracklog.58.com
