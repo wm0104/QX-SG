@@ -1,9 +1,8 @@
 #!name = 指定APP广告拦截合集（仅快手/菜鸟/知乎/拼多多/京东/淘宝/阿里巴巴）
-#!desc = 仅保留原文件中指定7个APP的广告拦截规则，无新增
-#!author = RuCu6 Keywos fmz200 可莉🅥 QingRex（原作者）
-#!category = 🚫 Block ads
+#!desc = 指定7个APP的广告拦截规则
+#!category =去广告
 #!tag = 广告拦截
-#!date = 2025-11-16 08:45:08（原文件日期）
+#!date =更新2025-12-3
 
 [Rule]
 # 淘宝
@@ -52,16 +51,6 @@ DOMAIN,th-a.pinduoduo.com,REJECT,extended-matching,pre-matching
 DOMAIN,ta-a.pinduoduo.com,REJECT,extended-matching,pre-matching
 DOMAIN,meta.pinduoduo.com,REJECT,extended-matching,pre-matching
 DOMAIN,apm-a.pinduoduo.com,REJECT,extended-matching,pre-matching
-# 知乎
-DOMAIN,appcloud.zhihu.com,REJECT,extended-matching,pre-matching
-DOMAIN,appcloud2.in.zhihu.com,REJECT,extended-matching,pre-matching
-DOMAIN,crash2.zhihu.com,REJECT,extended-matching,pre-matching
-DOMAIN,mqtt.zhihu.com,REJECT,extended-matching,pre-matching
-DOMAIN,sugar.zhihu.com,REJECT,extended-matching,pre-matching
-DOMAIN,zxid-m.mobileservice.cn,REJECT,extended-matching,pre-matching
-IP-CIDR,103.41.167.237/32,REJECT,no-resolve
-IP-CIDR,118.89.204.198/32,REJECT,no-resolve
-IP-CIDR6,2402:4e00:1200:ed00:0:9089:6dac:96b6/128,REJECT,no-resolve
 # 快手（原文件中快手相关广告规则，含字节系关联拦截）
 AND,((OR,((DOMAIN-SUFFIX,bytegecko.com),(DOMAIN-SUFFIX,byteeffecttos.com))),(DOMAIN-KEYWORD,ncdn)),REJECT
 DOMAIN-KEYWORD,dig.zjurl,REJECT,extended-matching,pre-matching
@@ -77,6 +66,8 @@ DOMAIN-KEYWORD,-ad-sign.byteimg.com,REJECT
 DOMAIN-KEYWORD,-ad.byteoversea.com,REJECT
 # 12306广告域名拦截
 DOMAIN,ad.12306.cn,DIRECT,extended-matching
+# 美颜相机
+DOMAIN,sdk.ad.sfys365.com,REJECT
 
 [URL Rewrite]
 # 广电去广告
@@ -99,10 +90,6 @@ DOMAIN,ad.12306.cn,DIRECT,extended-matching
 ^https:\/\/t-dsp\.pinduoduo\.com\/dspcb\/i\/mrk_ - reject
 ^https:\/\/images\.pinduoduo\.com\/mrk\/ - reject
 ^https:\/\/images\.pinduoduo\.com\/marketing_api\/ - reject
-# 知乎
-^https:\/\/api\.zhihu\.com\/unlimited\/go\/my_card - reject
-^https:\/\/www\.zhihu\.com\/appview\/v3\/zhmore - reject
-^https:\/\/link\.zhihu\.com\/\?target=(?:https?)?(?:%3A|:)?(?:\/\/|%2F%2F)?(.*) http://$1 302
 # 12306广告链接拦截
 ^https?:\/\/119\.29\.29\.29\/d - reject
 ^https?:\/\/203\.107\.1\.1/\d+/ss - reject
@@ -112,6 +99,8 @@ DOMAIN,ad.12306.cn,DIRECT,extended-matching
 ^https?:\/\/203\.107\.1\.97/\d+/ss - reject
 ^https?:\/\/2401:b180:2000:30::1c\/\d+\/d - reject
 ^https?:\/\/2401:b180:2000:20::10\/\d+\/d - reject
+# 美柚
+^https:\/\/circle\.(xm)?seeyouyima\.com\/v\d\/article_recommend\? - reject
 
 [Body Rewrite]
 # 京东
@@ -136,13 +125,7 @@ http-response-jq ^https:\/\/api\.pinduoduo\.com\/api\/caterham\/v3\/query\/order
 http-response-jq ^https:\/\/api\.pinduoduo\.com\/order\/ 'delpaths([["marketing_banner_vo"]])'
 http-response-jq ^https:\/\/api\.pinduoduo\.com\/order\/ 'delpaths([["shipping","banner_above_recommend"]])'
 http-response-jq ^https:\/\/api\.pinduoduo\.com\/api\/aristotle\/order_list_v4\? '.orders |= map(.order_buttons |= map(del(.order_growth_tip)))'
-# 知乎
-http-response-jq ^https:\/\/api\.zhihu\.com\/bazaar\/vip_tab\/header\? 'delpaths([["activity_banner"]])'
-http-response-jq ^https:\/\/api\.zhihu\.com\/bazaar\/vip_tab\/header\? 'delpaths([["activity_window"]])'
-http-response-jq ^https:\/\/api\.zhihu\.com\/bazaar\/vip_tab\/header\? 'delpaths([["vip_tip"]])'
-http-response ^https:\/\/api\.zhihu\.com\/search\/recommend_query\/v2\? "recommend_queries":\{.+\} "recommend_queries":{}
-http-response-jq ^https:\/\/api\.zhihu\.com\/questions\/\d+(?:\/answers|\/feeds|\?include=) 'del(.ad_info, .data.ad_info?, .query_info) | if (.data | type) == "array" then .data |= map(select(.target?.answer_type?)) else . end'
-# 菜鸟
+#菜鸟
 http-response-jq ^https:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.app\.home\.tabbar\.marketing\.get\.cn 'delpaths([["data"]])'
 http-response-jq ^https:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.adkeyword\.get\.cn 'delpaths([["data"]])'
 http-response-jq ^https:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.cncommunity\.my\.station\.query\.cn 'delpaths([["data"]])'
@@ -154,6 +137,25 @@ http-response-jq ^https:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.cainiao\.nbcps\.p
 http-response-jq ^https:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.com\.cainiao\.cnactivitycenter 'delpaths([["data"]])'
 http-response-jq ^https:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.com\.cainiao\.cncreditmarket\.hit\.getactivityhit\.cn 'delpaths([["data"]])'
 http-response-jq ^https:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.com\.cainiao\.longquan\.place\.getpageresourcecontent\.cn 'delpaths([["data"]])'
+# 美颜相机
+http-response-jq ^https:\/\/api\.meiyan\.com\/operation\/get_config\.json\? 'delpaths([["response","time_limit"]])'
+http-response-jq ^https:\/\/api\.meiyan\.com\/operation\/get_config\.json\? 'delpaths([["response","bubble"]])'
+http-response-jq ^https:\/\/api\.meiyan\.com\/operation\/get_config\.json\? 'delpaths([["response","person_center"]])'
+http-response-jq ^https:\/\/api\.meiyan\.com\/operation\/get_config\.json\? 'if (getpath(["response","function_pop","meiyan_style"]) | has("is_pop")) then (setpath(["response","function_pop","meiyan_style","is_pop"]; false)) else . end'
+http-response-jq ^https:\/\/api\.meiyan\.com\/operation\/get_config\.json\? 'if (getpath(["response","onoff","vip_half_window_exit_remain_popup"]) | has("open")) then (setpath(["response","onoff","vip_half_window_exit_remain_popup","open"]; 0)) else . end'
+http-response-jq ^https:\/\/api\.meiyan\.com\/operation\/get_config\.json\? 'if (getpath(["response","onoff"]) | has("vip_home_exit_remain_popup")) then (setpath(["response","onoff","vip_home_exit_remain_popup"]; 0)) else . end'
+# 美图秀秀
+http-response-jq ^https:\/\/api\.xiuxiu\.meitu\.com\/v\d\/common\/config\.json 'delpaths([["data","home_top_live"]])'
+http-response-jq ^https:\/\/api\.xiuxiu\.meitu\.com\/v\d\/common\/config\.json 'delpaths([["data","splashControl"]])'
+http-response-jq ^https:\/\/(api|tool)\.xiuxiu\.meitu\.com\/v\d\/tool\/common\/operation_icon\.json 'delpaths([["data","home_top_icon"]])'
+http-response-jq ^https:\/\/api\.posters\.meitu\.com\/common\/init\.json 'delpaths([["data","vip"]])'
+http-response-jq ^https:\/\/(api|tool)\.xiuxiu\.meitu\.com\/v\d\/tool\/common\/home\.json 'delpaths([["data",0,"items",10]])'
+http-response-jq ^https:\/\/(api|tool)\.xiuxiu\.meitu\.com\/v\d\/tool\/common\/home\.json 'delpaths([["data",1,"scheme"]])'
+http-response-jq ^https:\/\/(api|tool)\.xiuxiu\.meitu\.com\/v\d\/tool\/common\/home\.json 'delpaths([["data",1,"wallet_title"]])'
+http-response-jq ^https:\/\/(api|tool)\.xiuxiu\.meitu\.com\/v\d\/tool\/common\/home\.json 'delpaths([["data",1,"items",1]])'
+http-response-jq ^https:\/\/(api|tool)\.xiuxiu\.meitu\.com\/v\d\/tool\/common\/home\.json 'delpaths([["data",2,"items",1]])'
+# 美柚
+http-response-jq ^https:\/\/common\.seeyouyima\.com\/v2\/conf_list$ 'delpaths([["data","confList","Minor_mode_card"]])'
 
 [Map Local]
 # 淘宝
@@ -203,32 +205,19 @@ http-response-jq ^https:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.com\.cainiao\.lon
 ^https:\/\/api\.pinduoduo\.com\/api\/growth\/nagato\/app\/index\/gather\? data-type=text data="{}" status-code=200 header="Content-Type:application/json"
 ^https:\/\/api\.pinduoduo\.com\/api\/engels\/wait\/receive\/review\? data-type=text data="{}" status-code=200 header="Content-Type:application/json"
 ^https:\/\/api\.pinduoduo\.com\/api\/buffon\/nasus\/recommend\? data-type=text data="{}" status-code=200 header="Content-Type:application/json"
-# 知乎
-^https:\/\/api\.zhihu\.com\/commercial_api\/ data-type=text data="{}" status-code=200
-^https:\/\/api\.zhihu\.com\/content-distribution-core\/bubble\/common\/settings data-type=text data="{}" status-code=200
-^https:\/\/api\.zhihu\.com\/(?:moments\/lastread|drama\/hot-drama-list) data-type=text data="{}" status-code=200
-^https:\/\/api\.zhihu\.com\/root\/window data-type=text data="{}" status-code=200
-^https:\/\/api\.zhihu\.com\/(?:bazaar\/float_window|market\/popovers_v2) data-type=text data="{}" status-code=200
-^https:\/\/api\.zhihu\.com\/me\/guides data-type=text data="{}" status-code=200
-^https:\/\/api\.zhihu\.com\/people\/homepage_entry_v2 data-type=text data="{}" status-code=200
-^https:\/\/api\.zhihu\.com\/search\/(hot_search|preset_words) data-type=text data="{}" status-code=200
-^https:\/\/www\.zhihu\.com\/api\/v4\/search\/related_queries\/(?:article|answer)\/\d+ data-type=text data="{}" status-code=200
-^https:\/\/api\.zhihu\.com\/comment_v5\/(?:articles|answers)\/\d+\/list-headers data-type=text data="{}" status-code=200
-^https:\/\/api\.zhihu\.com\/prague\/related_suggestion_native\/feed\? data-type=text data="{}" status-code=200
-^https:\/\/api\.zhihu\.com\/v5\.1\/topics\/answer\/\d+\/relation data-type=text data="{}" status-code=200
-^https:\/\/api\.zhihu\.com\/ab\/api\/v1\/products\/zhihu\/platforms\/ios\/config data-type=text data="{}" status-code=200
-^https:\/\/api\.zhihu\.com\/ad-style-service\/request data-type=text data="{}" status-code=200
-^https:\/\/appcloud2\.zhihu\.com\/v3\/resource\?group_name=mp data-type=text data="{}" status-code=200
-^https:\/\/api\.zhihu\.com\/distribute\/rhea\/qa_ad_card\/h5\/recommendation\? data-type=text data="{}" status-code=200
-^https:\/\/www\.zhihu\.com\/api\/v4\/hot_recommendation data-type=text data="{}" status-code=200
-^https:\/\/www\.zhihu\.com\/api\/v4\/mcn\/v2\/linkcards\? data-type=text data="{}" status-code=200
-^https:\/\/www\.zhihu\.com\/api\/v4/(?:answers|questions)\/\d+/related-readings data-type=text data="{}" status-code=200
-^https:\/\/www\.zhihu\.com\/commercial_api\/banners_v3\/mobile_banner data-type=text data="{}" status-code=200
-^https:\/\/zhuanlan\.zhihu\.com\/api\/articles\/\d+\/recommendation data-type=text data="{}" status-code=200
 
 [Map Local]
 # 12306广告接口本地映射（返回空数据）
 ^https:\/\/gab\.122\.gov\.cn\/eapp\/m\/sysquery\/adver data-type=text data="{}" status-code=200
+# 美颜相机
+^https:\/\/api\.meiyan\.com\/operation\/home_banner\.json\? data-type=text data="{}" status-code=200
+^https:\/\/api\.meiyan\.com\/vip\/permission_update_popup\.json\? data-type=text data="{}" status-code=200
+# 美图秀秀
+^https:\/\/(api|tool)\.xiuxiu\.meitu\.com\/v\d\/vip\/sub_popup\.json data-type=text data="{}" status-code=200
+^https:\/\/(api|tool)\.xiuxiu\.meitu\.com\/\/v\d\/vip\/popup_show\.json data-type=text data="{}" status-code=200
+^https:\/\/api\.posters\.meitu\.com\/homepage\/leaflets\.json\? data-type=text data="{}" status-code=200
+# 美柚
+^https:\/\/wxproj\.seeyouyima\.com\/data\/today_tips data-type=text data="{}" status-code=200
 
 [Script]
 # 淘宝
@@ -247,20 +236,9 @@ http-response-jq ^https:\/\/cn-acs\.m\.cainiao\.com\/gw\/mtop\.com\.cainiao\.lon
 京东 = type=http-response, pattern=^https:\/\/api\.m\.jd\.com\/client\.action\?functionId=(deliverLayer|getTabHomeInfo|myOrderInfo|orderTrackBusiness|personinfoBusiness|start|welcomeHome), script-path=https://kelee.one/Resource/JavaScript/JD/JD_remove_ads.js, requires-body=true
 # 拼多多
 拼多多 = type=http-response, pattern=^https:\/\/api\.pinduoduo\.com\/api\/alexa\/homepage\/hub\?, script-path=https://kelee.one/Resource/JavaScript/PinDuoDuo/PinDuoDuo_remove_ads.js, requires-body=true
-# 知乎
-知乎 = type=http-response, pattern=^https:\/\/(?:api|page-info)\.zhihu\.com\/(?:answers|articles)\/v2\/\d+, script-path=https://kelee.one/Resource/JavaScript/Zhihu/Zhihu_remove_ads.js, requires-body=true
-知乎 = type=http-response, pattern=^https:\/\/api\.zhihu\.com\/commercial_api\/app_float_layer, script-path=https://kelee.one/Resource/JavaScript/Zhihu/Zhihu_remove_ads.js, requires-body=true
-知乎 = type=http-response, pattern=^https:\/\/api\.zhihu\.com\/feed\/render\/tab\/config\?, script-path=https://kelee.one/Resource/JavaScript/Zhihu/Zhihu_remove_ads.js, requires-body=true
-知乎 = type=http-response, pattern=^https:\/\/api\.zhihu\.com\/(?:moments_v3|topstory\/hot-lists\/total|topstory\/recommend), script-path=https://kelee.one/Resource/JavaScript/Zhihu/Zhihu_remove_ads.js, requires-body=true
-知乎 = type=http-response, pattern=^https:\/\/api\.zhihu\.com\/root\/tab, script-path=https://kelee.one/Resource/JavaScript/Zhihu/Zhihu_remove_ads.js, requires-body=true
-知乎 = type=http-response, pattern=^https:\/\/api\.zhihu\.com\/v2\/topstory\/hot-lists\/everyone-seeing\?, script-path=https://kelee.one/Resource/JavaScript/Zhihu/Zhihu_remove_ads.js, requires-body=true
-知乎 = type=http-response, pattern=^https:\/\/api\.zhihu\.com\/next-(?:bff|data|render), script-path=https://kelee.one/Resource/JavaScript/Zhihu/Zhihu_remove_ads.js, requires-body=true
-知乎 = type=http-response, pattern=^https:\/\/www\.zhihu\.com\/api\/v4\/(?:articles|answers)\/\d+\/recommendations?\?, script-path=https://kelee.one/Resource/JavaScript/Zhihu/Zhihu_remove_ads.js, requires-body=true
-知乎 = type=http-response, pattern=^https:\/\/appcloud2\.zhihu\.com\/v3\/config, script-path=https://kelee.one/Resource/JavaScript/Zhihu/Zhihu_remove_ads.js, requires-body=true
-知乎 = type=http-response, pattern=^https:\/\/m-cloud\.zhihu\.com\/api\/cloud\/zhihu\/config\/all\?, script-path=https://kelee.one/Resource/JavaScript/Zhihu/Zhihu_remove_ads.js, requires-body=true
 # 12306开屏广告+内置广告移除（原文件指定脚本）
 12306 = type=http-request, pattern=^https:\/\/ad\.12306\.cn\/ad\/ser\/getAdList$, script-path=https://kelee.one/Resource/JavaScript/12306/12306_remove_splashscreen_ads.js, requires-body=true
 12306 = type=http-request, pattern=^https:\/\/mobile\.12306\.cn\/otsmobile\/app\/mgs\/mgw\.htm$, script-path=https://kelee.one/Resource/JavaScript/12306/12306_remove_ads.js
 
 [MITM]
-hostname = app.10099.com.cn,acs.m.taobao.com, heic.alicdn.com, guide-acs.m.taobao.com, poplayer.template.alibaba.com, cn-acs.m.cainiao.com, netflow-mtop.cainiao.com, mtop-bff-mtop.cainiao.com, api.m.jd.com, api.pinduoduo.com, *.zhihu.com, appcloud2.zhihu.com, m-cloud.zhihu.com, bytegecko.com, byteeffecttos.com, zijieapi.com, snssdk.com, pangle.io, pangolin-sdk-toutiao*.com,ad.12306.cn, mobile.12306.cn, gab.122.gov.cn
+hostname = app.10099.com.cn,acs.m.taobao.com, heic.alicdn.com, guide-acs.m.taobao.com, poplayer.template.alibaba.com, cn-acs.m.cainiao.com, netflow-mtop.cainiao.com, mtop-bff-mtop.cainiao.com, api.m.jd.com, api.pinduoduo.com,bytegecko.com, byteeffecttos.com, zijieapi.com, snssdk.com, pangle.io, pangolin-sdk-toutiao*.com,ad.12306.cn, mobile.12306.cn, gab.122.gov.cn,api.meiyan.com, api.xiuxiu.meitu.com, tool.xiuxiu.meitu.com, api.posters.meitu.com, common.seeyouyima.com, wxproj.seeyouyima.com, circle.seeyouyima.com, circle.xmseeyouyima.com, sdk.ad.sfys365.com
